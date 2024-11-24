@@ -3,6 +3,8 @@ window.onload = function() {
 	document.getElementById("ShowButton").addEventListener("click", tableCreate);
 	document.getElementById("RegularDropdown").addEventListener("mouseover", loadDropdown);
 	document.getElementById("earliestDeliveriesButton").addEventListener("click", fetchEarliestDeliveries);
+	document.getElementById("buildingCountsButton").addEventListener("click", fetchBuildingCounts);
+	document.getElementById("buildingsSqftButton").addEventListener("click", fetchBuildingSqfts);
 	selectDropdownCreate();
 };
 
@@ -79,7 +81,121 @@ function selectDropdownAddElement(content) {
 	document.getElementById("SelectionDropdownContents").appendChild(br);
 }
 
+function formatDate(created_at) {
+	const date = new Date(created_at);
+	return new Intl.DateTimeFormat('en-US', {
+		month: 'long',
+		day: 'numeric',
+		year: 'numeric'
+	}).format(date);
+}
 
+// Fetches each resident's earliest package delivery
+async function fetchEarliestDeliveries(event) {
+    event.preventDefault();
+
+	try {
+		const response = await fetch("/earliest-deliveries", {
+			method: 'GET'
+		});
+		const responseData = await response.json();
+    	const tableContent = responseData.data;
+
+		const tableElement = document.getElementById("earliestDeliveriesTable");
+		const tableBody = tableElement.querySelector('tbody');
+
+		// Always clear old, already fetched data before new fetching process.
+		if (tableBody) {
+			tableBody.innerHTML = '';
+		}
+	
+		const dateIndex = 2;
+		tableContent.forEach(record => {
+			const row = tableBody.insertRow();
+			record.forEach((field, index) => {
+				const cell = row.insertCell(index);
+				if (index == dateIndex) {
+					cell.textContent = formatDate(field);
+				} else {
+					cell.textContent = field;
+				}
+			});
+		});
+	} catch (error) {
+		console.error(error);
+	}
+}
+
+// Fetches the number of residents in each building
+async function fetchBuildingCounts(event) {
+    event.preventDefault();
+
+	try {
+		const minValue = document.getElementById('buildingsCountTextInput').value;
+		const response = await fetch('/building-counts', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				min: Number(minValue)
+			})
+		});
+
+		const responseData = await response.json();
+		const tableContent = responseData.data;
+
+		const tableElement = document.getElementById("buildingCountsTable");
+		const tableBody = tableElement.querySelector('tbody');
+
+		// Always clear old, already fetched data before new fetching process.
+		if (tableBody) {
+			tableBody.innerHTML = '';
+		}
+	
+		tableContent.forEach(record => {
+			const row = tableBody.insertRow();
+			record.forEach((field, index) => {
+				const cell = row.insertCell(index);
+				cell.textContent = field;
+			});
+		});
+	} catch (error) {
+		console.error(error);
+	}
+}
+
+
+// Fetches the average sqft of a room in each building
+async function fetchBuildingSqfts(event) {
+    event.preventDefault();
+
+	try {
+		const response = await fetch("/building-sqfts", {
+			method: 'GET'
+		});
+		const responseData = await response.json();
+    	const tableContent = responseData.data;
+
+		const tableElement = document.getElementById("buildingsSqftTable");
+		const tableBody = tableElement.querySelector('tbody');
+
+		// Always clear old, already fetched data before new fetching process.
+		if (tableBody) {
+			tableBody.innerHTML = '';
+		}
+	
+		tableContent.forEach(record => {
+			const row = tableBody.insertRow();
+			record.forEach((field, index) => {
+				const cell = row.insertCell(index);
+				cell.textContent = field;
+			});
+		});
+	} catch (error) {
+		console.error(error);
+	}
+}
 
 
 

@@ -64,7 +64,7 @@ router.get('/count-demotable', async (req, res) => {
     }
 });
 
-router.get('/earliest-delivery', async (req, res) => {
+router.get('/earliest-deliveries', async (req, res) => {
     const tableContent = await appService.fetchEarliestDeliveries();
     if (!tableContent) {
         res.status(500).json({ success: false });
