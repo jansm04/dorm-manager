@@ -139,8 +139,8 @@ CREATE TABLE Sublet (
     studentId INTEGER NOT NULL, 
     residentId INTEGER UNIQUE NOT NULL, 
     name VARCHAR(50) NOT NULL, 
-    startDate VARCHAR(50) NOT NULL, 
-    endDate VARCHAR(50) NOT NULL, 
+    startDate DATE NOT NULL, 
+    endDate DATE NOT NULL, 
     PRIMARY KEY (studentId), 
     FOREIGN KEY (residentId) 
         REFERENCES PermanentResident(studentId) 
@@ -150,7 +150,7 @@ CREATE TABLE Package (
     id INTEGER NOT NULL, 
     studentId INTEGER NOT NULL, 
     mailbox INTEGER NOT NULL, 
-    deliveryDate VARCHAR(50), 
+    deliveryDate DATE, 
     PRIMARY KEY (id), 
     FOREIGN KEY (studentId) 
         REFERENCES PermanentResident(studentId) 
