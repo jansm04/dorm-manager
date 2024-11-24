@@ -1,7 +1,10 @@
-document.getElementById("AddDataButton").addEventListener("click", handleClickAdd);
-document.getElementById("ShowButton").addEventListener("click", tableCreate);
-document.getElementById("RegularDropdown").addEventListener("mouseover", loadDropdown);
-selectDropdownCreate();
+window.onload = function() {
+	document.getElementById("AddDataButton").addEventListener("click", handleClickAdd);
+	document.getElementById("ShowButton").addEventListener("click", tableCreate);
+	document.getElementById("RegularDropdown").addEventListener("mouseover", loadDropdown);
+	document.getElementById("earliestDeliveriesButton").addEventListener("click", fetchEarliestDeliveries);
+	selectDropdownCreate();
+};
 
 function handleClickAdd() {
 	window.open('AddData.html');
@@ -75,6 +78,7 @@ function selectDropdownAddElement(content) {
 	const br = document.createElement("br");
 	document.getElementById("SelectionDropdownContents").appendChild(br);
 }
+
 
 
 
