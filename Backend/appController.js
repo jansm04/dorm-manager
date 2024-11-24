@@ -64,5 +64,33 @@ router.get('/count-demotable', async (req, res) => {
     }
 });
 
+router.get('/earliest-delivery', async (req, res) => {
+    const tableContent = await appService.fetchEarliestDeliveries();
+    if (!tableContent) {
+        res.status(500).json({ success: false });
+    } else {
+        res.json({ data: tableContent });
+    }
+})
+
+router.post('/building-counts', async (req, res) => {
+    const { min } = req.body;
+    const tableContent = await appService.fetchBuildingCounts(min);
+    if (!tableContent) {
+        res.status(500).json({ success: false });
+    } else {
+        res.json({ data: tableContent });
+    }
+})
+
+router.get('/building-sqfts', async (req, res) => {
+    const tableContent = await appService.fetchBuildingSqfts();
+    if (!tableContent) {
+        res.status(500).json({ success: false });
+    } else {
+        res.json({ data: tableContent });
+    } 
+})
+
 
 module.exports = router;
