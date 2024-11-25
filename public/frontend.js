@@ -102,23 +102,22 @@ async function fetchEarliestDeliveries(event) {
     	const tableContent = responseData.data;
 
 		const tableElement = document.getElementById("earliestDeliveriesTable");
-		const tableBody = tableElement.querySelector('tbody');
+		const tableHeader = tableElement.querySelector('thead');
+		tableHeader.innerHTML = ''; // clear
 
-		// Always clear old, already fetched data before new fetching process.
-		if (tableBody) {
-			tableBody.innerHTML = '';
-		}
+		const tr = tableHeader.insertRow();
+		tableAddElement(tr, "tableTitle", "Resident ID");
+		tableAddElement(tr, "tableTitle", "Resident Name");
+		tableAddElement(tr, "tableTitle", "Earliest Delivery");
+
+		const tableBody = tableElement.querySelector('tbody');
+		tableBody.innerHTML = ''; // clear
 	
 		const dateIndex = 2;
 		tableContent.forEach(record => {
-			const row = tableBody.insertRow();
+			const tr = tableBody.insertRow();
 			record.forEach((field, index) => {
-				const cell = row.insertCell(index);
-				if (index == dateIndex) {
-					cell.textContent = formatDate(field);
-				} else {
-					cell.textContent = field;
-				}
+				tableAddElement(tr, "tableElement", index === dateIndex ? formatDate(field) : field);
 			});
 		});
 	} catch (error) {
@@ -146,18 +145,20 @@ async function fetchBuildingCounts(event) {
 		const tableContent = responseData.data;
 
 		const tableElement = document.getElementById("buildingCountsTable");
-		const tableBody = tableElement.querySelector('tbody');
+		const tableHeader = tableElement.querySelector('thead');
+		tableHeader.innerHTML = ''; // clear
 
-		// Always clear old, already fetched data before new fetching process.
-		if (tableBody) {
-			tableBody.innerHTML = '';
-		}
+		const tr = tableHeader.insertRow();
+		tableAddElement(tr, "tableTitle", "Building");
+		tableAddElement(tr, "tableTitle", "Number of Residents");
+
+		const tableBody = tableElement.querySelector('tbody');
+		tableBody.innerHTML = ''; // clear
 	
 		tableContent.forEach(record => {
-			const row = tableBody.insertRow();
+			const tr = tableBody.insertRow();
 			record.forEach((field, index) => {
-				const cell = row.insertCell(index);
-				cell.textContent = field;
+				tableAddElement(tr, "tableElement", field);
 			});
 		});
 	} catch (error) {
@@ -178,18 +179,20 @@ async function fetchBuildingSqfts(event) {
     	const tableContent = responseData.data;
 
 		const tableElement = document.getElementById("buildingsSqftTable");
-		const tableBody = tableElement.querySelector('tbody');
+		const tableHeader = tableElement.querySelector('thead');
+		tableHeader.innerHTML = ''; // clear
 
-		// Always clear old, already fetched data before new fetching process.
-		if (tableBody) {
-			tableBody.innerHTML = '';
-		}
+		const tr = tableHeader.insertRow();
+		tableAddElement(tr, "tableTitle", "Building");
+		tableAddElement(tr, "tableTitle", "Average Room Sqft");
+		
+		const tableBody = tableElement.querySelector('tbody');
+		tableBody.innerHTML = ''; // clear
 	
 		tableContent.forEach(record => {
-			const row = tableBody.insertRow();
+			const tr = tableBody.insertRow();
 			record.forEach((field, index) => {
-				const cell = row.insertCell(index);
-				cell.textContent = field;
+				tableAddElement(tr, "tableElement", field);
 			});
 		});
 	} catch (error) {
