@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+    <title>304 Frontend</title>
+    <link href="style.css" rel="stylesheet"/>
+</head>
+<body>
+<titleLabel>Housing Database - 304</titleLabel>
+<button id="AddDataButton" class="titleButton">Add Data</button>
+<div></div>
+<mediumLabel>On this page you would be able to see main information and maybe filter it</mediumLabel>
+<div></div>
+<div class="dropdown">
+	<button class="button" id = "RegularDropdown">[Dropdown]</button>
+	<div class="dropdown-content" id = "dropdownContents">
+		<a id = "hh">loading...</a>
+	</div>
+</div>
+
+
+<input type="text" id="FilterTextInput" class="textInput"><br><br>
+
+<div class="dropdown">
+	<button class="button" id = "SelectionDropdown">[DropdownWithOptions]</button>
+	<div class="dropdown-content" id = "SelectionDropdownContents"></div>
+</div>
+
+<br><br>
+<button id="ShowButton" class="button">Show Data</button>
+<br><br>
+<table id="table" class="table"></table>
+
+<div>
+    <mediumLabel>Check earliest package delivery dates for each resident</mediumLabel>
+	<button id="earliestDeliveriesButton" class="button">Check</button>
+	<table id="earliestDeliveriesTable" class="table" border="1">
+        <thead>
+            <tr>
+                <th>Resident ID</th>
+                <th>Resident Name</th>
+				<th>Earliest Delivery</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <mediumLabel>Check number of residents in each building</mediumLabel>
+	<button id="buildingCountsButton" class="button">Check</button>
+    <mediumLabel>Minimum Number:</mediumLabel>
+    <input type="number" min="0" value="0" id="buildingsCountTextInput" class="textInput">
+	<table id="buildingCountsTable" class="table" border="1">
+        <thead>
+            <tr>
+                <th>Building</th>
+                <th># of Residents</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <mediumLabel>Check average room sqft for buildings above the OVERALL average</mediumLabel>
+	<button id="buildingsSqftButton" class="button">Check</button>
+	<table id="buildingsSqftTable" class="table" border="1">
+        <thead>
+            <tr>
+                <th>Building</th>
+                <th>Avg Square Feet of a Room</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript" src="frontend.js"></script>
+</body>
+</html>

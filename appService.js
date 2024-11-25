@@ -142,11 +142,84 @@ async function countDemotable() {
     });
 }
 
+/**
+ * Fetches the earliest date a package was delivered for every resident with at least one
+ * package delivery. Joins with PermanentResident to return the resident names in addition
+ * to the resident IDs.
+ * 
+ * @returns the rows from the query result
+ */
+async function fetchEarliestDeliveries() {
+    return await withOracleDB(async (connection) => {
+        const query = `
+            SELECT p.studentId, p.name, d.earliest_delivery
+            FROM (  
+                SELECT studentId, min(deliveryDate) as earliest_delivery
+                FROM Package
+                GROUP BY studentId
+            ) d
+            JOIN PermanentResident p
+            ON d.studentId = p.studentId
+        `;
+        const result = await connection.execute(query);
+        return result.rows;
+    }).catch(() => {
+        return false;
+    });
+}
+
+/**
+ * Fetches the number of residents in each building. Filters out all the buildings where the number
+ * of residents is less than the given requirement.
+ * 
+ * @param {*} min the minimum count to filter out all the buildings with less than min residents
+ * @returns the rows from the query result
+ */
+async function fetchBuildingCounts(min) {
+    return await withOracleDB(async (connection) => {
+        const query = `
+            SELECT buildingName, COUNT(*)
+            FROM PermanentResident
+            GROUP BY buildingName
+            HAVING COUNT(*) >= :min
+        `;
+        const result = await connection.execute(query, [min]);
+        return result.rows;
+    }).catch(() => {
+        return false;
+    });
+}
+
+/**
+ * Fetches the average room square footage in each building. Filters out all the buildings where 
+ * the average room sqft is less than the average room sqft in all buildings.
+ * 
+ * @returns the rows from the query result
+ */
+async function fetchBuildingSqfts() {
+    return await withOracleDB(async (connection) => {
+        const query = `
+            SELECT buildingName, avg(sqfeet)
+                FROM Room_R2
+                GROUP BY buildingName
+                HAVING avg(sqfeet) >= (SELECT avg(sqfeet)
+                                        FROM Room_R2)
+        `;
+        const result = await connection.execute(query);
+        return result.rows;
+    }).catch(() => {
+        return false;
+    })
+}
+
 module.exports = {
     testOracleConnection,
     fetchDemotableFromDb,
     initiateDemotable, 
     insertDemotable, 
     updateNameDemotable, 
-    countDemotable
+    countDemotable,
+    fetchEarliestDeliveries,
+    fetchBuildingCounts,
+    fetchBuildingSqfts
 };
