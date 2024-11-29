@@ -247,7 +247,7 @@ async function fetchTenancyInformation(studentId) {
         const query = `
             SELECT pr.studentId, pr.name, pr.age, pr.email, r2.roomNumber, r2.unitNumber, r2.buildingName, r1.sqFeet, r1.bedSize from PermanentResident pr
             JOIN Room_R2 r2 ON pr.roomNumber = r2.roomNumber AND pr.unitNumber = r2.unitNumber AND pr.buildingName = r2.buildingName 
-            JOIN Room_R1 r1 ON r2.sqFeet = r1.sqFeet WHERE studentId = :studentId;
+            JOIN Room_R1 r1 ON r2.sqFeet = r1.sqFeet WHERE studentId = :studentId
         `;
         const result = await connection.execute(query, [studentId]);
         return result.rows;
@@ -272,9 +272,9 @@ async function fetchBuildingWithAllRooms() {
                 WHERE NOT EXISTS (
                     SELECT 1 FROM Room_R2 r2 WHERE r2.buildingName = r.buildingName AND r2.sqFeet = r1.sqFeet
             )
-        );
+        )
         `;
-        const result = await connection.execute(query, [studentId]);
+        const result = await connection.execute(query);
         return result.rows;
     }).catch((error) => {
         console.log(error);
