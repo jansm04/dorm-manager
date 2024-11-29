@@ -218,6 +218,71 @@ async function fetchBuildingSqfts() {
 }
 
 /**
+ * Fetch the RA id of a student
+ * 
+ * @returns one row with the RA id
+ */
+async function fetchRAId(studentId) {
+    return await withOracleDB(async (connection) => {
+        const query = `
+            SELECT residenceAdvisorId from Student
+            WHERE studentId = :id
+        `;
+        const result = await connection.execute(query, [studentId]);
+        return result.rows;
+    }).catch((error) => {
+        console.log(error);
+        return false;
+    })
+}
+
+/**
+ * Get tenancy information about a student from student ID
+ * 
+ * @returns the row with information about the student's occupancy e.g. building name, unit number, unit size, etc. 
+ */
+
+async function fetchTenancyInformation(studentId) {
+    return await withOracleDB(async (connection) => {
+        const query = `
+            SELECT pr.studentId, pr.name, pr.age, pr.email, r2.roomNumber, r2.unitNumber, r2.buildingName, r1.sqFeet, r1.bedSize from PermanentResident pr
+            JOIN Room_R2 r2 ON pr.roomNumber = r2.roomNumber AND pr.unitNumber = r2.unitNumber AND pr.buildingName = r2.buildingName 
+            JOIN Room_R1 r1 ON r2.sqFeet = r1.sqFeet WHERE studentId = :studentId;
+        `;
+        const result = await connection.execute(query, [studentId]);
+        return result.rows;
+    }).catch((error) => {
+        console.log(error);
+        return false;
+    })
+}
+
+/**
+ * Get buildings that contain all types of rooms
+ * 
+ * @return rows with results
+ */
+async function fetchBuildingWithAllRooms() {
+    return await withOracleDB(async (connection) => {
+        const query = `
+            SELECT DISTINCT r.buildingName FROM Room_R2 r
+            WHERE NOT EXISTS (
+                SELECT r1.sqFeet
+                FROM Room_R1 r1
+                WHERE NOT EXISTS (
+                    SELECT 1 FROM Room_R2 r2 WHERE r2.buildingName = r.buildingName AND r2.sqFeet = r1.sqFeet
+            )
+        );
+        `;
+        const result = await connection.execute(query, [studentId]);
+        return result.rows;
+    }).catch((error) => {
+        console.log(error);
+        return false;
+    })
+}
+
+/*
  * Fetches the information of a resident by ID
  * @returns the rows from the query result
  */
@@ -323,6 +388,9 @@ module.exports = {
     fetchEarliestDeliveries,
     fetchBuildingCounts,
     fetchBuildingSqfts,
+    fetchRAId,
+    fetchTenancyInformation,
+    fetchBuildingWithAllRooms,
     fetchResident,
     createResident,
     editResident,

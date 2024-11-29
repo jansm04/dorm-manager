@@ -206,7 +206,15 @@ VALUES (2, 1, 'Building 1', 100);
 INSERT INTO Room_R2 (roomNumber, unitNumber, buildingName, sqFeet) 
 VALUES (1, 2, 'Building 1', 100);
 INSERT INTO Room_R2 (roomNumber, unitNumber, buildingName, sqFeet) 
-VALUES (3, 2, 'Building 1', 100);
+VALUES (2, 2, 'Building 1', 80);
+INSERT INTO Room_R2 (roomNumber, unitNumber, buildingName, sqFeet) 
+VALUES (3, 1, 'Building 1', 250);
+INSERT INTO Room_R2 (roomNumber, unitNumber, buildingName, sqFeet) 
+VALUES (4, 1, 'Building 1', 200);
+INSERT INTO Room_R2 (roomNumber, unitNumber, buildingName, sqFeet) 
+VALUES (3, 2, 'Building 1', 120);
+INSERT INTO Room_R2 (roomNumber, unitNumber, buildingName, sqFeet) 
+VALUES (4, 2, 'Building 1', 100);
 INSERT INTO Room_R2 (roomNumber, unitNumber, buildingName, sqFeet) 
 VALUES (2, 6, 'Building 2', 120);
 INSERT INTO Room_R2 (roomNumber, unitNumber, buildingName, sqFeet) 

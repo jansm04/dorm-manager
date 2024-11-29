@@ -92,9 +92,36 @@ router.get('/building-sqfts', async (req, res) => {
     } 
 })
 
+router.get('/ra-id', async (req, res) => {
+    const tableContent = await appService.fetchRAId(req.query.id);
+    if (!tableContent) {
+        res.status(500).json({ success: false });
+    } else {
+        res.json({ data: tableContent });
+    } 
+})
+
+router.get('/tenancy', async (req, res) => {
+    const tableContent = await appService.fetchTenancyInformation(req.query.id);
+    if (!tableContent) {
+        res.status(500).json({ success: false });
+    } else {
+        res.json({ data: tableContent });
+    }
+})
+
 router.post('/get-resident', async (req, res) => {
     const { id } = req.body;
     const tableContent = await appService.fetchResident(id);
+    if (!tableContent) {
+        res.status(500).json({ success: false });
+    } else {
+        res.json({ data: tableContent });
+    }
+})
+
+router.get('/building-with-all-rooms', async (req, res) => {
+    const tableContent = await appService.fetchBuildingWithAllRooms();
     if (!tableContent) {
         res.status(500).json({ success: false });
     } else {
@@ -136,7 +163,5 @@ router.get('/get-residentdb', async (req, res) => {
     const tableContent = await appService.fetchResidentTable();
     res.json({data: tableContent});
 })
-
-
 
 module.exports = router;
