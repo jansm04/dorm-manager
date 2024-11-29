@@ -224,7 +224,7 @@ async function fetchBuildingSqfts() {
 async function fetchResident(id) {
     return await withOracleDB(async (connection) => {
         const query = `
-            SELECT studentId, age, name, email
+            SELECT studentId, age, name, email, roomNumber, unitNumber, buildingName
             FROM PermanentResident
             WHERE studentId = :id`
         ;
@@ -237,7 +237,7 @@ async function fetchResident(id) {
 
 
 /**
- * Fetches the information of a resident by ID
+ * creates the information of a resident into PermanentResident
  * @returns the rows from the query result
  */
 async function createResident(data) {
@@ -248,13 +248,56 @@ async function createResident(data) {
     room = Number(data[4]);
     unit = Number(data[5]);
     bld = data[6];
-    console.error(id + " " + nm + " " +email + " " +age + " " +room + " " +unit + " " + bld);
     return await withOracleDB(async (connection) => {
         const query = `
             INSERT INTO PermanentResident (studentId, roomNumber, unitNumber, buildingName, age, name, email) 
             VALUES (:id, :room, :unit, :bld, :age, :nm, :email)`
         ;
         const result = await connection.execute(query,[id, room, unit, bld, age, nm, email],{ autoCommit: true });
+        return result.rowsAffected && result.rowsAffected > 0;
+    }).catch(() => {
+        return false;
+    });
+}
+
+/**
+ * deletes the information of a resident by ID
+ * @returns the rows from the query result
+ */
+async function editResident(data) {
+    id = Number(data[0]);
+    field = data[1];
+    if(field === "room" || field === "unit" || field === "age"){
+        valnum = Number(data[2]);
+        return await withOracleDB(async (connection) => {
+            const query = `UPDATE PermanentResident
+            SET :field=:valnum
+            WHERE studentId=:id`;
+            const result = await connection.execute(query,[id, field, valnum],{ autoCommit: true });
+        console.error("hoping");
+
+            return result.rowsAffected && result.rowsAffected > 0;
+        }).catch(() => {
+            return false;
+        });
+    } else {
+        valstring = String(data[2]);
+        return await withOracleDB(async (connection) => {
+            const query = `UPDATE PermanentResident SET email = :valstring WHERE studentId= :id`;
+            const result = await connection.execute(query,[id, valstring],{ autoCommit: true });
+            return result.rowsAffected && result.rowsAffected > 0;
+        }).catch(() => {
+            return false;
+        });
+    }
+    
+    
+}
+
+async function deleteResident(id) {
+    return await withOracleDB(async (connection) => {
+        const query = `DELETE FROM PermanentResident WHERE studentId=:id`;
+        const result = await connection.execute(query,[id],{ autoCommit: true });
         return result.rowsAffected && result.rowsAffected > 0;
     }).catch(() => {
         return false;
@@ -282,5 +325,7 @@ module.exports = {
     fetchBuildingSqfts,
     fetchResident,
     createResident,
+    editResident,
+    deleteResident,
     fetchResidentTable
 };

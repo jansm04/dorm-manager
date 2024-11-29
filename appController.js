@@ -92,7 +92,7 @@ router.get('/building-sqfts', async (req, res) => {
     } 
 })
 
-router.get('/get-resident', async (req, res) => {
+router.post('/get-resident', async (req, res) => {
     const { id } = req.body;
     const tableContent = await appService.fetchResident(id);
     if (!tableContent) {
@@ -105,6 +105,26 @@ router.get('/get-resident', async (req, res) => {
 router.post('/push-resident', async (req, res) => {
     const { data } = req.body;
     const ans = await appService.createResident(data);
+    if (!ans) {
+        res.status(500).json({ success: false });
+    } else {
+        res.json({ data: ans });
+    }
+})
+
+router.delete('/delete-resident', async (req, res) => {
+    const { id } = req.body;
+    const ans = await appService.deleteResident(id);
+    if (!ans) {
+        res.status(500).json({ success: false });
+    } else {
+        res.json({ data: ans });
+    }
+})
+
+router.put('/edit-resident', async (req, res) => {
+    const { data } = req.body;
+    const ans = await appService.editResident(data);
     if (!ans) {
         res.status(500).json({ success: false });
     } else {

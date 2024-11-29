@@ -4,9 +4,12 @@ document.getElementById("DeleteButton").addEventListener("click", handleClickRem
 document.getElementById("AddSendButton").addEventListener("click", handleAddSend);
 document.getElementById("EditSendButton").addEventListener("click", handleEditSend);
 document.getElementById("DeleteSendButton").addEventListener("click", handleDeleteSend);
-document.getElementById("Name").addEventListener("click", handleSelectField);
-document.getElementById("Email").addEventListener("click", handleSelectField);
-document.getElementById("DOB").addEventListener("click", handleSelectField);
+document.getElementById("name").addEventListener("click", handleSelectField);
+document.getElementById("email").addEventListener("click", handleSelectField);
+document.getElementById("age").addEventListener("click", handleSelectField);
+document.getElementById("room").addEventListener("click", handleSelectField);
+document.getElementById("unit").addEventListener("click", handleSelectField);
+document.getElementById("building").addEventListener("click", handleSelectField);
 handleClickAdd();
 
 function handleClickAdd() {
@@ -63,27 +66,85 @@ async function handleSelectField(evt) {
 	await fetchResident(id);
 }
 
-function handleEditSend() {
+async function handleEditSend() {
 	var id = document.getElementById("EditIDInput").value;
-	var name = document.getElementById("EditNameInput").value;
-	var textInput = document.getElementById("EditTextInput").value;
-	buildings = [];
-	for(i = 0; i < buildingsFields.length; i++){
-		buildings[i] = buildingsFields[i].value;
+	var field;
+
+	if(document.getElementById("EditFieldDropdown").innerHTML == "name"){field = "name";}
+	if(document.getElementById("EditFieldDropdown").innerHTML == "email"){field = "email";}
+	if(document.getElementById("EditFieldDropdown").innerHTML == "age"){field = "age";}
+	if(document.getElementById("EditFieldDropdown").innerHTML == "room"){field = "roomNumber";}
+	if(document.getElementById("EditFieldDropdown").innerHTML == "unit"){field = "unitNumber";}
+	if(document.getElementById("EditFieldDropdown").innerHTML == "building"){field = "buildingName";}
+	var val = document.getElementById("EditTextInput").value;
+
+	try {
+		const response = await fetch('/edit-resident', {
+			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				data: [id, field, val]
+			})
+		});
+		const responseData = await response.json();
+		if(responseData["success"] == false){
+			alert("wasn't able to edit the resident")
+		} else {
+			alert("resident deleted")
+		}
+
+		r = await fetch('/get-residentdb', {
+			method: 'GET'
+		});
+		rd = await r.json();
+
+		alert(JSON.stringify(rd));
+		
+	} catch (error) {
+		alert(error);
+		console.error(error);
 	}
-	alert(name +" "+ textInput +" "+ timeInput + " " + buildings);
 }
 
-function handleDeleteSend() {
-	var name = document.getElementById("DeleteIDInput").value;
-	alert(name);
+async function handleDeleteSend() {
+	var id = document.getElementById("DeleteIDInput").value;
+	try {
+		const response = await fetch('/delete-resident', {
+			method: 'DELETE',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				id: Number(id)
+			})
+		});
+		const responseData = await response.json();
+		if(responseData["success"] == false){
+			alert("wasn't able to delete the resident")
+		} else {
+			alert("resident deleted")
+		}
+
+		r = await fetch('/get-residentdb', {
+			method: 'GET'
+		});
+		rd = await r.json();
+
+		alert(JSON.stringify(rd));
+		
+	} catch (error) {
+		alert(error);
+		console.error(error);
+	}
 }
 
 
 async function fetchResident(id) {
 	try {
 		const response = await fetch('/get-resident', {
-			method: 'GET',
+			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
 			},
@@ -97,12 +158,18 @@ async function fetchResident(id) {
 		if(tableContent.length == 0){
 			alert("No resident with the given id found");
 		} else {
-			if(document.getElementById("EditFieldDropdown").innerHTML == "Name"){
+			if(document.getElementById("EditFieldDropdown").innerHTML == "name"){
 				document.getElementById("EditTextInput").value = tableContent[0][2];
-			} else if(document.getElementById("EditFieldDropdown").innerHTML == "DOB"){
+			} else if(document.getElementById("EditFieldDropdown").innerHTML == "age"){
 				document.getElementById("EditTextInput").value = tableContent[0][1];
-			} else if(document.getElementById("EditFieldDropdown").innerHTML == "Email"){
+			} else if(document.getElementById("EditFieldDropdown").innerHTML == "email"){
 				document.getElementById("EditTextInput").value = tableContent[0][3];
+			} else if(document.getElementById("EditFieldDropdown").innerHTML == "room"){
+				document.getElementById("EditTextInput").value = tableContent[0][4];
+			} else if(document.getElementById("EditFieldDropdown").innerHTML == "unit"){
+				document.getElementById("EditTextInput").value = tableContent[0][5];
+			} else if(document.getElementById("EditFieldDropdown").innerHTML == "building"){
+				document.getElementById("EditTextInput").value = tableContent[0][6];
 			}
 		}
 	} catch (error) {
