@@ -47,39 +47,26 @@ function handleAddSend() {
 	var id = document.getElementById("AddIDInput").value;
 	var name = document.getElementById("AddNameInput").value;
 	var email = document.getElementById("AddEmailInput").value;
-	var dob = document.getElementById("AddDOBInput").value;
-	alert(id +" "+ name +" "+ email +" "+ dob);
+	var age = document.getElementById("AddDOBInput").value;
+	var room = document.getElementById("AddRoomInput").value;
+	var unit = document.getElementById("AddUnitInput").value;
+	var bld = document.getElementById("AddBuildingInput").value;
+	addResident(id, name, email, age, room, unit, bld);
 }
 
-function handleSelectField(evt) {
+async function handleSelectField(evt) {
 	document.getElementById("newValueDescriptor").style.display = "inline";
-	document.getElementById("EditTimeInput").style.display = "none";
-	document.getElementById("EditTextInput").style.display = "none";
 	document.getElementById("EditFieldDropdown").innerHTML = evt.currentTarget.id;
-	if(evt.currentTarget.id === "DOB"){
-		document.getElementById("EditTimeInput").style.display = "block";
-	} else {
-		document.getElementById("EditTextInput").style.display = "block";
-	}
+	document.getElementById("EditTextInput").style.display = "block";
 	document.getElementById("EditSendButton").style.display = "block";
-}
-
-
-function handleEditCreateField() {
-	var input = document.createElement("input");
-	input.type = "text";
-	input.className = "textInput";
-	buildingsFields.push(input);
-	document.getElementById("EditfieldsContainer").appendChild(input);
-	var div = document.createElement('div');
-	div.id = "DIV";
-	document.getElementById("EditfieldsContainer").appendChild(div);
+	var id = document.getElementById("EditIDInput").value;
+	await fetchResident(id);
 }
 
 function handleEditSend() {
+	var id = document.getElementById("EditIDInput").value;
 	var name = document.getElementById("EditNameInput").value;
 	var textInput = document.getElementById("EditTextInput").value;
-	var timeInput = document.getElementById("EditTimeInput").value;
 	buildings = [];
 	for(i = 0; i < buildingsFields.length; i++){
 		buildings[i] = buildingsFields[i].value;
@@ -90,4 +77,68 @@ function handleEditSend() {
 function handleDeleteSend() {
 	var name = document.getElementById("DeleteIDInput").value;
 	alert(name);
+}
+
+
+async function fetchResident(id) {
+	try {
+		const response = await fetch('/get-resident', {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				id: Number(id)
+			})
+		});
+
+		const responseData = await response.json();
+		const tableContent = responseData.data;
+		if(tableContent.length == 0){
+			alert("No resident with the given id found");
+		} else {
+			if(document.getElementById("EditFieldDropdown").innerHTML == "Name"){
+				document.getElementById("EditTextInput").value = tableContent[0][2];
+			} else if(document.getElementById("EditFieldDropdown").innerHTML == "DOB"){
+				document.getElementById("EditTextInput").value = tableContent[0][1];
+			} else if(document.getElementById("EditFieldDropdown").innerHTML == "Email"){
+				document.getElementById("EditTextInput").value = tableContent[0][3];
+			}
+		}
+	} catch (error) {
+		alert(error);
+		console.error(error);
+	}
+}
+
+
+async function addResident(id, name, email, age, room, unit, bld) {
+	try {
+		const response = await fetch('/push-resident', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				data: [id, name, email, age, room, unit, bld]
+			})
+		});
+		const responseData = await response.json();
+		if(responseData["success"] == false){
+			alert("wasn't able to add the resident")
+		} else {
+			alert("resident added")
+		}
+
+		r = await fetch('/get-residentdb', {
+			method: 'GET'
+		});
+		rd = await r.json();
+
+		alert(JSON.stringify(rd));
+		
+	} catch (error) {
+		alert(error);
+		console.error(error);
+	}
 }

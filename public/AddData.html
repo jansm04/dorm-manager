@@ -16,9 +16,11 @@
     <mediumLabel> Adding a Resident </mediumLabel> <br><br>
     <smallLabel>Student ID</smallLabel> <div></div> <input type="text" id="AddIDInput" class="textInput"><div></div>
     <smallLabel>Name</smallLabel> <div></div> <input type="text" id="AddNameInput" class="textInput"><div></div>
-    <smallLabel>Email</smallLabel> <div></div><input type="text" id="AddEmailInput" class="textInput"> <br><br> 
-    <smallLabel>DOB</smallLabel> <div></div>
-    <input type="date" id="AddDOBInput" value="2000-00-01" min="1900-01-01" max="2024-12-31" class="textInput" required />
+    <smallLabel>Email</smallLabel> <div></div><input type="text" id="AddEmailInput" class="textInput">  <div></div>
+    <smallLabel>Age</smallLabel> <div></div><input type="text" id="AddDOBInput" class="textInput"> <div></div>
+    <smallLabel>Room Number</smallLabel> <div></div><input type="text" id="AddRoomInput" class="textInput">  <div></div>
+    <smallLabel>Unit Number</smallLabel> <div></div><input type="text" id="AddUnitInput" class="textInput">  <div></div>
+    <smallLabel>Building Name</smallLabel> <div></div><input type="text" id="AddBuildingInput" class="textInput">  <div></div>
     <br><br> 
     <button id="AddSendButton" class="button">Add</button>
 </div>
@@ -31,13 +33,12 @@
         <div class="dropdown-content" id = "dropdownContents"> 
             <a id = "Name">Name</a>
             <a id = "Email">Email</a>
-            <a id = "DOB">DOB</a>
+            <a id = "DOB">Age</a>
         </div>
     </div>
     <br><br> 
     <smallLabel id="newValueDescriptor">Value</smallLabel> <div></div>
     <input type="text" id="EditTextInput" class="textInput">
-    <input type="date" id="EditTimeInput" value="2000-00-01" min="1900-01-01" max="2024-12-31" class="textInput" required />
     <br><br> 
     <button id="EditSendButton" class="button">Edit</button>
 

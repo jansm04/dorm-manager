@@ -92,5 +92,31 @@ router.get('/building-sqfts', async (req, res) => {
     } 
 })
 
+router.get('/get-resident', async (req, res) => {
+    const { id } = req.body;
+    const tableContent = await appService.fetchResident(id);
+    if (!tableContent) {
+        res.status(500).json({ success: false });
+    } else {
+        res.json({ data: tableContent });
+    }
+})
+
+router.post('/push-resident', async (req, res) => {
+    const { data } = req.body;
+    const ans = await appService.createResident(data);
+    if (!ans) {
+        res.status(500).json({ success: false });
+    } else {
+        res.json({ data: ans });
+    }
+})
+
+router.get('/get-residentdb', async (req, res) => {
+    const tableContent = await appService.fetchResidentTable();
+    res.json({data: tableContent});
+})
+
+
 
 module.exports = router;

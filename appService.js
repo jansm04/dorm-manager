@@ -1,10 +1,13 @@
 const oracledb = require('oracledb');
 const loadEnvFile = require('./utils/envUtil');
-
+//require('dotenv').config();
 const envVariables = loadEnvFile('./.env');
 
 // Database configuration setup. Ensure your .env file has the required database credentials.
 const dbConfig = {
+    //user: process.env.ORACLE_USER,
+    //password: process.env.ORACLE_PASS,
+    //connectString: `${process.env.ORACLE_HOST}:${process.env.ORACLE_PORT}/${process.env.ORACLE_DBNAME}`,
     user: envVariables.ORACLE_USER,
     password: envVariables.ORACLE_PASS,
     connectString: `${envVariables.ORACLE_HOST}:${envVariables.ORACLE_PORT}/${envVariables.ORACLE_DBNAME}`,
@@ -14,9 +17,11 @@ const dbConfig = {
     poolTimeout: 60
 };
 
+
 // initialize connection pool
 async function initializeConnectionPool() {
     try {
+        oracledb.initOracleClient({ libDir: process.env.ORACLE_DIR })
         await oracledb.createPool(dbConfig);
         console.log('Connection pool started');
     } catch (err) {
@@ -212,6 +217,59 @@ async function fetchBuildingSqfts() {
     })
 }
 
+/**
+ * Fetches the information of a resident by ID
+ * @returns the rows from the query result
+ */
+async function fetchResident(id) {
+    return await withOracleDB(async (connection) => {
+        const query = `
+            SELECT studentId, age, name, email
+            FROM PermanentResident
+            WHERE studentId = :id`
+        ;
+        const result = await connection.execute(query, [id]);
+        return result.rows;
+    }).catch(() => {
+        return false;
+    });
+}
+
+
+/**
+ * Fetches the information of a resident by ID
+ * @returns the rows from the query result
+ */
+async function createResident(data) {
+    id = Number(data[0]);
+    nm = data[1];
+    email = data[2];
+    age = Number(data[3]);
+    room = Number(data[4]);
+    unit = Number(data[5]);
+    bld = data[6];
+    console.error(id + " " + nm + " " +email + " " +age + " " +room + " " +unit + " " + bld);
+    return await withOracleDB(async (connection) => {
+        const query = `
+            INSERT INTO PermanentResident (studentId, roomNumber, unitNumber, buildingName, age, name, email) 
+            VALUES (:id, :room, :unit, :bld, :age, :nm, :email)`
+        ;
+        const result = await connection.execute(query,[id, room, unit, bld, age, nm, email],{ autoCommit: true });
+        return result.rowsAffected && result.rowsAffected > 0;
+    }).catch(() => {
+        return false;
+    });
+}
+
+async function fetchResidentTable() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute('SELECT * FROM PermanentResident');
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
+
 module.exports = {
     testOracleConnection,
     fetchDemotableFromDb,
@@ -221,5 +279,8 @@ module.exports = {
     countDemotable,
     fetchEarliestDeliveries,
     fetchBuildingCounts,
-    fetchBuildingSqfts
+    fetchBuildingSqfts,
+    fetchResident,
+    createResident,
+    fetchResidentTable
 };
