@@ -183,6 +183,16 @@ INSERT INTO Building_R1 (buildingName, dormName, yearBuilt, floors)
 VALUES ('Cedar', 'Ponderosa Commons', 2001, 24);
 INSERT INTO Building_R1 (buildingName, dormName, yearBuilt, floors) 
 VALUES ('Braeburn', 'Orchard Commons', 2016, 24);
+INSERT INTO Building_R1 (buildingName, dormName, yearBuilt, floors) 
+VALUES ('Building 3', 'Marine Drive', 2003, 17);
+INSERT INTO Building_R1 (buildingName, dormName, yearBuilt, floors) 
+VALUES ('Building 4', 'Marine Drive', 2005, 10);
+INSERT INTO Building_R1 (buildingName, dormName, yearBuilt, floors) 
+VALUES ('Pine', 'Ponderosa Commons', 2002, 24);
+INSERT INTO Building_R1 (buildingName, dormName, yearBuilt, floors) 
+VALUES ('Spruce', 'Ponderosa Commons', 2004, 24);
+INSERT INTO Building_R1 (buildingName, dormName, yearBuilt, floors) 
+VALUES ('Bartlett', 'Orchard Commons', 2018, 24);
 
 INSERT INTO Unit (unitNumber, buildingName, isStudio, isShared, bathrooms, hasDishwasher) 
 VALUES (1, 'Building 1', 1, 0, 1, 0);
@@ -194,6 +204,26 @@ INSERT INTO Unit (unitNumber, buildingName, isStudio, isShared, bathrooms, hasDi
 VALUES (7, 'Building 2', 1, 0, 1, 0);
 INSERT INTO Unit (unitNumber, buildingName, isStudio, isShared, bathrooms, hasDishwasher) 
 VALUES (11, 'Braeburn', 1, 1, 1, 1);
+INSERT INTO Unit (unitNumber, buildingName, isStudio, isShared, bathrooms, hasDishwasher) 
+VALUES (3, 'Building 1', 0, 1, 2, 1);
+INSERT INTO Unit (unitNumber, buildingName, isStudio, isShared, bathrooms, hasDishwasher) 
+VALUES (4, 'Building 1', 1, 0, 1, 0);
+INSERT INTO Unit (unitNumber, buildingName, isStudio, isShared, bathrooms, hasDishwasher) 
+VALUES (8, 'Building 2', 0, 0, 2, 1);
+INSERT INTO Unit (unitNumber, buildingName, isStudio, isShared, bathrooms, hasDishwasher) 
+VALUES (9, 'Building 2', 1, 0, 1, 0);
+INSERT INTO Unit (unitNumber, buildingName, isStudio, isShared, bathrooms, hasDishwasher) 
+VALUES (1, 'Oak', 1, 1, 1, 1);
+INSERT INTO Unit (unitNumber, buildingName, isStudio, isShared, bathrooms, hasDishwasher) 
+VALUES (2, 'Oak', 0, 0, 2, 1);
+INSERT INTO Unit (unitNumber, buildingName, isStudio, isShared, bathrooms, hasDishwasher) 
+VALUES (3, 'Cedar', 1, 0, 1, 0);
+INSERT INTO Unit (unitNumber, buildingName, isStudio, isShared, bathrooms, hasDishwasher) 
+VALUES (4, 'Cedar', 0, 1, 2, 1);
+INSERT INTO Unit (unitNumber, buildingName, isStudio, isShared, bathrooms, hasDishwasher) 
+VALUES (1, 'Bartlett', 1, 0, 1, 1);
+INSERT INTO Unit (unitNumber, buildingName, isStudio, isShared, bathrooms, hasDishwasher) 
+VALUES (2, 'Bartlett', 0, 1, 2, 0);
 
 INSERT INTO Room_R1 (sqFeet, bedSize) VALUES (80, 'Twin XL');
 INSERT INTO Room_R1 (sqFeet, bedSize) VALUES (100, 'Twin XL');
@@ -229,6 +259,46 @@ INSERT INTO Room_R2 (roomNumber, unitNumber, buildingName, sqFeet)
 VALUES (3, 11, 'Braeburn', 250);
 INSERT INTO Room_R2 (roomNumber, unitNumber, buildingName, sqFeet) 
 VALUES (4, 11, 'Braeburn', 250);
+INSERT INTO Room_R2 (roomNumber, unitNumber, buildingName, sqFeet) 
+VALUES (1, 1, 'Building 1', 100);
+INSERT INTO Room_R2 (roomNumber, unitNumber, buildingName, sqFeet) 
+VALUES (5, 1, 'Building 1', 200);
+INSERT INTO Room_R2 (roomNumber, unitNumber, buildingName, sqFeet) 
+VALUES (6, 1, 'Building 1', 80);
+INSERT INTO Room_R2 (roomNumber, unitNumber, buildingName, sqFeet) 
+VALUES (5, 2, 'Building 1', 120);
+INSERT INTO Room_R2 (roomNumber, unitNumber, buildingName, sqFeet) 
+VALUES (6, 2, 'Building 1', 200);
+INSERT INTO Room_R2 (roomNumber, unitNumber, buildingName, sqFeet) 
+VALUES (3, 6, 'Building 2', 100);
+INSERT INTO Room_R2 (roomNumber, unitNumber, buildingName, sqFeet) 
+VALUES (4, 6, 'Building 2', 120);
+INSERT INTO Room_R2 (roomNumber, unitNumber, buildingName, sqFeet) 
+VALUES (3, 7, 'Building 2', 250);
+INSERT INTO Room_R2 (roomNumber, unitNumber, buildingName, sqFeet) 
+VALUES (4, 7, 'Building 2', 200);
+INSERT INTO Room_R2 (roomNumber, unitNumber, buildingName, sqFeet) 
+VALUES (1, 2, 'Oak', 200);
+INSERT INTO Room_R2 (roomNumber, unitNumber, buildingName, sqFeet) 
+VALUES (2, 2, 'Oak', 250);
+INSERT INTO Room_R2 (roomNumber, unitNumber, buildingName, sqFeet) 
+VALUES (1, 3, 'Cedar', 80);
+INSERT INTO Room_R2 (roomNumber, unitNumber, buildingName, sqFeet) 
+VALUES (2, 3, 'Cedar', 100);
+INSERT INTO Room_R2 (roomNumber, unitNumber, buildingName, sqFeet) 
+VALUES (3, 3, 'Cedar', 120);
+INSERT INTO Room_R2 (roomNumber, unitNumber, buildingName, sqFeet) 
+VALUES (1, 1, 'Bartlett', 250);
+INSERT INTO Room_R2 (roomNumber, unitNumber, buildingName, sqFeet) 
+VALUES (2, 1, 'Bartlett', 200);
+INSERT INTO Room_R2 (roomNumber, unitNumber, buildingName, sqFeet) 
+VALUES (3, 1, 'Bartlett', 120);
+INSERT INTO Room_R2 (roomNumber, unitNumber, buildingName, sqFeet) 
+VALUES (4, 1, 'Bartlett', 100);
+INSERT INTO Room_R2 (roomNumber, unitNumber, buildingName, sqFeet) 
+VALUES (5, 1, 'Bartlett', 80);
+INSERT INTO Room_R2 (roomNumber, unitNumber, buildingName, sqFeet) 
+VALUES (6, 1, 'Bartlett', 250);
 
 INSERT INTO PermanentResident (studentId, roomNumber, unitNumber, buildingName, age, name, email) 
 VALUES (13849148, 2, 1, 'Building 1', 20, 'William Nylander', 'willy@gmail.com');

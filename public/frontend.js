@@ -192,6 +192,10 @@ async function fetchBuildingSqfts(event) {
 		tableContent.forEach(record => {
 			const tr = tableBody.insertRow();
 			record.forEach((field, index) => {
+				if (index == 1) {
+					// round to one decimal
+					field = Number(field).toFixed(1);
+				}
 				tableAddElement(tr, "tableElement", field);
 			});
 		});
