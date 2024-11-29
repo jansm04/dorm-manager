@@ -4,15 +4,10 @@ document.getElementById("DeleteButton").addEventListener("click", handleClickRem
 document.getElementById("AddSendButton").addEventListener("click", handleAddSend);
 document.getElementById("EditSendButton").addEventListener("click", handleEditSend);
 document.getElementById("DeleteSendButton").addEventListener("click", handleDeleteSend);
-document.getElementById("Address").addEventListener("click", handleSelectField);
-document.getElementById("Manager").addEventListener("click", handleSelectField);
-document.getElementById("Opening Time").addEventListener("click", handleSelectField);
-document.getElementById("Closing time").addEventListener("click", handleSelectField);
-document.getElementById("Buildings").addEventListener("click", handleSelectField);
-document.getElementById("AddBuildingFieldCreator").addEventListener("click", handleAddCreateField);
-document.getElementById("EditBuildingFieldCreator").addEventListener("click", handleEditCreateField);
+document.getElementById("Name").addEventListener("click", handleSelectField);
+document.getElementById("Email").addEventListener("click", handleSelectField);
+document.getElementById("DOB").addEventListener("click", handleSelectField);
 handleClickAdd();
-var buildingsFields = [];
 
 function handleClickAdd() {
 	document.getElementById("AddButton").style.background='#464958';
@@ -21,7 +16,6 @@ function handleClickAdd() {
 	document.getElementById("AddDiv").style.display = "block";
 	document.getElementById("EditDiv").style.display = "none";
 	document.getElementById("RemoveDiv").style.display = "none";
-	buildingsFields = [];
 }
 
 function handleClickEdit() {
@@ -37,7 +31,6 @@ function handleClickEdit() {
 	document.getElementById("EditfieldsContainer").style.display = "none";
 	document.getElementById("EditBuildingFieldCreator").style.display = "none";
 	document.getElementById("EditSendButton").style.display = "none";
-	buildingsFields = [];
 }
 
 function handleClickRemove() {
@@ -49,44 +42,23 @@ function handleClickRemove() {
 	document.getElementById("RemoveDiv").style.display = "block";
 }
 
-function handleAddCreateField() {
-	var input = document.createElement("input");
-	input.type = "text";
-	input.className = "textInput";
-	buildingsFields.push(input);
-	document.getElementById("fieldsContainer").appendChild(input);
-	var div = document.createElement('div');
-	div.id = "DIV";
-	document.getElementById("fieldsContainer").appendChild(div);
-}
-
 
 function handleAddSend() {
+	var id = document.getElementById("AddIDInput").value;
 	var name = document.getElementById("AddNameInput").value;
-	var address = document.getElementById("AddAddressInput").value;
-	var manager = document.getElementById("AddManagerInput").value;
-	var opening = document.getElementById("AddOpenInput").value;
-	var closing = document.getElementById("AddCloseInput").value;
-	buildings = [];
-	for(i = 0; i < buildingsFields.length; i++){
-		buildings[i] = buildingsFields[i].value;
-	}
-	alert(name +" "+ address +" "+ manager +" "+ opening +" "+ closing + " "+ buildings);
+	var email = document.getElementById("AddEmailInput").value;
+	var dob = document.getElementById("AddDOBInput").value;
+	alert(id +" "+ name +" "+ email +" "+ dob);
 }
 
 function handleSelectField(evt) {
 	document.getElementById("newValueDescriptor").style.display = "inline";
 	document.getElementById("EditTimeInput").style.display = "none";
 	document.getElementById("EditTextInput").style.display = "none";
-	document.getElementById("EditfieldsContainer").style.display = "none";
-	document.getElementById("EditBuildingFieldCreator").style.display = "none";
 	document.getElementById("EditFieldDropdown").innerHTML = evt.currentTarget.id;
-	if(evt.currentTarget.id === "Opening Time" || evt.currentTarget.id === "Closing time"){
+	if(evt.currentTarget.id === "DOB"){
 		document.getElementById("EditTimeInput").style.display = "block";
-	} else if(evt.currentTarget.id === "Buildings"){
-		document.getElementById("EditfieldsContainer").style.display = "block";
-		document.getElementById("EditBuildingFieldCreator").style.display = "block";
-	}else {
+	} else {
 		document.getElementById("EditTextInput").style.display = "block";
 	}
 	document.getElementById("EditSendButton").style.display = "block";
@@ -116,6 +88,6 @@ function handleEditSend() {
 }
 
 function handleDeleteSend() {
-	var name = document.getElementById("DeleteNameInput").value;
+	var name = document.getElementById("DeleteIDInput").value;
 	alert(name);
 }

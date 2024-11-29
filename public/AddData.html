@@ -13,47 +13,38 @@
 <button id="DeleteButton" class="button">Delete Data</button>
 <br><br>
 <div id = "AddDiv">
-    <mediumLabel> Adding a Residence </mediumLabel> <br><br>
+    <mediumLabel> Adding a Resident </mediumLabel> <br><br>
+    <smallLabel>Student ID</smallLabel> <div></div> <input type="text" id="AddIDInput" class="textInput"><div></div>
     <smallLabel>Name</smallLabel> <div></div> <input type="text" id="AddNameInput" class="textInput"><div></div>
-    <smallLabel>Address</smallLabel> <div></div> <input type="text" id="AddAddressInput" class="textInput"><div></div>
-    <smallLabel>Manager</smallLabel> <div></div><input type="text" id="AddManagerInput" class="textInput"> <br><br> 
-    <smallLabel>Front Desk Hours:</smallLabel> <div></div>
-    <input type="time" id="AddOpenInput" min="00:00" max="24:00" class="textInput" required />
-    <input type="time" id="AddCloseInput" min="00:00" max="24:00" class="textInput" required /><br><br> 
-    <smallLabel> Operates Buildings: </smallLabel> <div></div>
-    <div id = "fieldsContainer">
-    </div>
-    <button id="AddBuildingFieldCreator" class="button">Add Building</button>
+    <smallLabel>Email</smallLabel> <div></div><input type="text" id="AddEmailInput" class="textInput"> <br><br> 
+    <smallLabel>DOB</smallLabel> <div></div>
+    <input type="date" id="AddDOBInput" value="2000-00-01" min="1900-01-01" max="2024-12-31" class="textInput" required />
     <br><br> 
     <button id="AddSendButton" class="button">Add</button>
 </div>
 <div id = "EditDiv">
-    <mediumLabel> Editing a Residence </mediumLabel><br><br>
-    <smallLabel>Residence Name</smallLabel> <div></div> <input type="text" id="EditNameInput" class="textInput"> <br><br> 
+    <mediumLabel> Editing a Resident </mediumLabel><br><br>
+    <smallLabel>Student ID</smallLabel> <div></div> <input type="text" id="EditIDInput" class="textInput"> <br><br> 
     <smallLabel>Field to Edit</smallLabel> <div></div>
     <div class="dropdown">
         <button class="button" id = "EditFieldDropdown">[Field]</button>
         <div class="dropdown-content" id = "dropdownContents"> 
-            <a id = "Address">Address</a>
-            <a id = "Manager">Manager</a>
-            <a id = "Opening Time">Opening Time</a>
-            <a id = "Closing time">Closing Time</a>
-            <a id = "Buildings">Buildings</a>
+            <a id = "Name">Name</a>
+            <a id = "Email">Email</a>
+            <a id = "DOB">DOB</a>
         </div>
     </div>
     <br><br> 
     <smallLabel id="newValueDescriptor">Value</smallLabel> <div></div>
     <input type="text" id="EditTextInput" class="textInput">
-    <input type="time" id="EditTimeInput" min="00:00" max="24:00" class="textInput" required />
-    <div id = "EditfieldsContainer">
-    </div>
-    <button id="EditBuildingFieldCreator" class="button">Add Building</button><br><br> 
+    <input type="date" id="EditTimeInput" value="2000-00-01" min="1900-01-01" max="2024-12-31" class="textInput" required />
+    <br><br> 
     <button id="EditSendButton" class="button">Edit</button>
 
 </div>
 <div id = "RemoveDiv">
-    <mediumLabel> Deleting a Residence </mediumLabel><br><br>
-    <smallLabel>Residence Name</smallLabel> <div></div> <input type="text" id="DeleteNameInput" class="textInput"> <br><br> 
+    <mediumLabel> Deleting a Resident </mediumLabel><br><br>
+    <smallLabel>Resident ID</smallLabel> <div></div> <input type="text" id="DeleteIDInput" class="textInput"> <br><br> 
     <button id="DeleteSendButton" class="button">Delete</button>
 </div>
 <br><br>
