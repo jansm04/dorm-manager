@@ -92,7 +92,7 @@ async function handleEditSend() {
 		if(responseData["success"] == false){
 			alert("wasn't able to edit the resident")
 		} else {
-			alert("resident deleted")
+			alert("resident updated")
 		}
 
 		r = await fetch('/get-residentdb', {
