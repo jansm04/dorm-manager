@@ -332,13 +332,13 @@ async function createResident(data) {
 async function editResident(data) {
     id = Number(data[0]);
     field = data[1];
-    if(field === "room" || field === "unit" || field === "age"){
+    if(field === "roomNumber" || field === "unitNumber" || field === "age"){
         valnum = Number(data[2]);
         return await withOracleDB(async (connection) => {
             const query = `UPDATE PermanentResident
-            SET :field=:valnum
+            SET ${field}=:valnum
             WHERE studentId=:id`;
-            const result = await connection.execute(query,[id, field, valnum],{ autoCommit: true });
+            const result = await connection.execute(query,[valnum, id],{ autoCommit: true });
         console.error("hoping");
 
             return result.rowsAffected && result.rowsAffected > 0;
@@ -348,8 +348,8 @@ async function editResident(data) {
     } else {
         valstring = String(data[2]);
         return await withOracleDB(async (connection) => {
-            const query = `UPDATE PermanentResident SET email = :valstring WHERE studentId= :id`;
-            const result = await connection.execute(query,[id, valstring],{ autoCommit: true });
+            const query = `UPDATE PermanentResident SET ${field} = :valstring WHERE studentId= :id`;
+            const result = await connection.execute(query,[valstring, id],{ autoCommit: true });
             return result.rowsAffected && result.rowsAffected > 0;
         }).catch(() => {
             return false;
