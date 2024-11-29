@@ -7,12 +7,52 @@
 </head>
 <body>
 <titleLabel>Housing Database - 304</titleLabel>
-<div></div>
-<mediumLabel>On this page you would be able to add data</mediumLabel>
 <br><br>
-<input type="text" id="FilterTextInput" class="textInput">
+<button id="AddButton" class="button">Add Data</button>
+<button id="EditButton" class="button">Edit Data</button>
+<button id="DeleteButton" class="button">Delete Data</button>
 <br><br>
-<button id="AddButton" class="button">Add</button>
+<div id = "AddDiv">
+    <mediumLabel> Adding a Resident </mediumLabel> <br><br>
+    <smallLabel>Student ID</smallLabel> <div></div> <input type="text" id="AddIDInput" class="textInput"><div></div>
+    <smallLabel>Name</smallLabel> <div></div> <input type="text" id="AddNameInput" class="textInput"><div></div>
+    <smallLabel>Email</smallLabel> <div></div><input type="text" id="AddEmailInput" class="textInput">  <div></div>
+    <smallLabel>Age</smallLabel> <div></div><input type="text" id="AddDOBInput" class="textInput"> <div></div>
+    <smallLabel>Room Number</smallLabel> <div></div><input type="text" id="AddRoomInput" class="textInput">  <div></div>
+    <smallLabel>Unit Number</smallLabel> <div></div><input type="text" id="AddUnitInput" class="textInput">  <div></div>
+    <smallLabel>Building Name</smallLabel> <div></div><input type="text" id="AddBuildingInput" class="textInput">  <div></div>
+    <br><br> 
+    <button id="AddSendButton" class="button">Add</button>
+</div>
+<div id = "EditDiv">
+    <mediumLabel> Editing a Resident </mediumLabel><br><br>
+    <smallLabel>Student ID</smallLabel> <div></div> <input type="text" id="EditIDInput" class="textInput"> <br><br> 
+    <smallLabel>Field to Edit</smallLabel> <div></div>
+    <div class="dropdown">
+        <button class="button" id = "EditFieldDropdown">[Field]</button>
+        <div class="dropdown-content" id = "dropdownContents"> 
+            <a id = "name">Name</a>
+            <a id = "email">Email</a>
+            <a id = "age">Age</a>
+            <a id = "room">Room Number</a>
+            <a id = "unit">Unit Number</a>
+            <a id = "building">Building Name</a>
+        </div>
+    </div>
+    <br><br> 
+    <smallLabel id="newValueDescriptor">Value</smallLabel> <div></div>
+    <input type="text" id="EditTextInput" class="textInput">
+    <br><br> 
+    <button id="EditSendButton" class="button">Edit</button>
+
+</div>
+<div id = "RemoveDiv">
+    <mediumLabel> Deleting a Resident </mediumLabel><br><br>
+    <smallLabel>Resident ID</smallLabel> <div></div> <input type="text" id="DeleteIDInput" class="textInput"> <br><br> 
+    <button id="DeleteSendButton" class="button">Delete</button>
+</div>
+<br><br>
+<br><br>
 
 <script type="text/javascript" src="add.js"></script>
 </body>
