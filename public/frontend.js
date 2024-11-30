@@ -5,6 +5,9 @@ window.onload = function() {
 	document.getElementById("earliestDeliveriesButton").addEventListener("click", fetchEarliestDeliveries);
 	document.getElementById("buildingCountsButton").addEventListener("click", fetchBuildingCounts);
 	document.getElementById("buildingsSqftButton").addEventListener("click", fetchBuildingSqfts);
+	document.getElementById("allRoomsButton").addEventListener("click", fetchBuildingWithAllRooms);
+	document.getElementById("tenancyButton").addEventListener("click", fetchTenancyInformation);
+	document.getElementById("RAButton").addEventListener("click", fetchRAId);
 	selectDropdownCreate();
 };
 
@@ -204,6 +207,119 @@ async function fetchBuildingSqfts(event) {
 	}
 }
 
+// Fetches the names of the buildings with all room sizes
+async function fetchBuildingWithAllRooms(event) {
+    event.preventDefault();
+
+	try {
+		const response = await fetch("/building-with-all-rooms", {
+			method: 'GET'
+		});
+		const responseData = await response.json();
+    	const tableContent = responseData.data;
+
+		const tableElement = document.getElementById("allRoomsTable");
+		const tableHeader = tableElement.querySelector('thead');
+		tableHeader.innerHTML = ''; // clear
+
+		const tr = tableHeader.insertRow();
+		tableAddElement(tr, "tableTitle", "Building Name");
+		
+		const tableBody = tableElement.querySelector('tbody');
+		tableBody.innerHTML = ''; // clear
+	
+		tableContent.forEach(record => {
+			const tr = tableBody.insertRow();
+			record.forEach((field, index) => {
+				if (index == 1) {
+					// round to one decimal
+					field = Number(field).toFixed(1);
+				}
+				tableAddElement(tr, "tableElement", field);
+			});
+		});
+	} catch (error) {
+		console.error(error);
+	}
+}
+
+// Fetches tenancy information of the student id
+async function fetchTenancyInformation(event) {
+    event.preventDefault();
+
+	try {
+		const sid = document.getElementById('tenancySIDInput').value;
+
+		const response = await fetch(`/tenancy?id=${sid}`, {
+			method: 'GET'
+		});
+			
+		const responseData = await response.json();
+		const tableContent = responseData.data;
+
+		const tableElement = document.getElementById("tenancyTable");
+		const tableHeader = tableElement.querySelector('thead');
+		tableHeader.innerHTML = ''; // clear
+
+		const tr = tableHeader.insertRow();
+		tableAddElement(tr, "tableTitle", "Student ID");
+		tableAddElement(tr, "tableTitle", "Name");
+		tableAddElement(tr, "tableTitle", "Age");
+		tableAddElement(tr, "tableTitle", "Email");
+		tableAddElement(tr, "tableTitle", "Room#");
+		tableAddElement(tr, "tableTitle", "Unit#");
+		tableAddElement(tr, "tableTitle", "Building Name");
+		tableAddElement(tr, "tableTitle", "Sq Feet");
+		tableAddElement(tr, "tableTitle", "Bed size");
+
+		const tableBody = tableElement.querySelector('tbody');
+		tableBody.innerHTML = ''; // clear
+	
+		tableContent.forEach(record => {
+			const tr = tableBody.insertRow();
+			record.forEach((field, index) => {
+				tableAddElement(tr, "tableElement", field);
+			});
+		});
+	} catch (error) {
+		console.error(error);
+	}
+}
+
+// Fetches RA ID from the student id
+async function fetchRAId(event) {
+	event.preventDefault();
+
+	try {
+		const sid = document.getElementById('RASIDInput').value;
+
+		const response = await fetch(`/ra-id?id=${sid}`, {
+			method: 'GET'
+		});
+			
+		const responseData = await response.json();
+		const tableContent = responseData.data;
+
+		const tableElement = document.getElementById("RATable");
+		const tableHeader = tableElement.querySelector('thead');
+		tableHeader.innerHTML = ''; // clear
+
+		const tr = tableHeader.insertRow();
+		tableAddElement(tr, "tableTitle", "RA Student ID");
+
+		const tableBody = tableElement.querySelector('tbody');
+		tableBody.innerHTML = ''; // clear
+	
+		tableContent.forEach(record => {
+			const tr = tableBody.insertRow();
+			record.forEach((field, index) => {
+				tableAddElement(tr, "tableElement", field);
+			});
+		});
+	} catch (error) {
+		console.error(error);
+	}
+}
 
 
 
