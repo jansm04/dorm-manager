@@ -339,7 +339,6 @@ async function editResident(data) {
             SET ${field}=:valnum
             WHERE studentId=:id`;
             const result = await connection.execute(query,[valnum, id],{ autoCommit: true });
-        console.error("hoping");
 
             return result.rowsAffected && result.rowsAffected > 0;
         }).catch(() => {
@@ -378,6 +377,26 @@ async function fetchResidentTable() {
     });
 }
 
+
+/*
+ * Fetches the information of a resident by ID
+ * @returns the rows from the query result
+ */
+async function fetchResidentFilter(q) {
+    return await withOracleDB(async (connection) => {
+        const query = `
+            SELECT studentId, age, name, email, roomNumber, unitNumber, buildingName
+            FROM PermanentResident
+            ${q}`
+        ;
+        console.error('this:' + q + "!");
+        const result = await connection.execute(query);
+        return result.rows;
+    }).catch(() => {
+        return false;
+    });
+}
+
 module.exports = {
     testOracleConnection,
     fetchDemotableFromDb,
@@ -395,5 +414,6 @@ module.exports = {
     createResident,
     editResident,
     deleteResident,
-    fetchResidentTable
+    fetchResidentTable,
+    fetchResidentFilter
 };

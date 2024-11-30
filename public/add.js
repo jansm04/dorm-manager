@@ -1,9 +1,11 @@
 document.getElementById("AddButton").addEventListener("click", handleClickAdd);
 document.getElementById("EditButton").addEventListener("click", handleClickEdit);
 document.getElementById("DeleteButton").addEventListener("click", handleClickRemove);
+document.getElementById("SelectButton").addEventListener("click", handleClickSelect);
 document.getElementById("AddSendButton").addEventListener("click", handleAddSend);
 document.getElementById("EditSendButton").addEventListener("click", handleEditSend);
 document.getElementById("DeleteSendButton").addEventListener("click", handleDeleteSend);
+document.getElementById("SelectSendButton").addEventListener("click", handleSelectSend);
 document.getElementById("name").addEventListener("click", handleSelectField);
 document.getElementById("email").addEventListener("click", handleSelectField);
 document.getElementById("age").addEventListener("click", handleSelectField);
@@ -16,18 +18,22 @@ function handleClickAdd() {
 	document.getElementById("AddButton").style.background='#464958';
 	document.getElementById("EditButton").style.background='#252c57';
 	document.getElementById("DeleteButton").style.background='#252c57';
+	document.getElementById("SelectButton").style.background='#252c57';
 	document.getElementById("AddDiv").style.display = "block";
 	document.getElementById("EditDiv").style.display = "none";
 	document.getElementById("RemoveDiv").style.display = "none";
+	document.getElementById("SelectDiv").style.display = "none";
 }
 
 function handleClickEdit() {
 	document.getElementById("AddButton").style.background='#252c57';
 	document.getElementById("EditButton").style.background='#464958';
 	document.getElementById("DeleteButton").style.background='#252c57';
+	document.getElementById("SelectButton").style.background='#252c57';
 	document.getElementById("AddDiv").style.display = "none";
 	document.getElementById("EditDiv").style.display = "block";
 	document.getElementById("RemoveDiv").style.display = "none";
+	document.getElementById("SelectDiv").style.display = "none";
 	document.getElementById("newValueDescriptor").style.display = "none";
 	document.getElementById("EditTextInput").style.display = "none";
 	document.getElementById("EditTimeInput").style.display = "none";
@@ -40,9 +46,22 @@ function handleClickRemove() {
 	document.getElementById("AddButton").style.background='#252c57';
 	document.getElementById("EditButton").style.background='#252c57';
 	document.getElementById("DeleteButton").style.background='#464958';
+	document.getElementById("SelectButton").style.background='#252c57';
 	document.getElementById("AddDiv").style.display = "none";
 	document.getElementById("EditDiv").style.display = "none";
 	document.getElementById("RemoveDiv").style.display = "block";
+	document.getElementById("SelectDiv").style.display = "none";
+}
+
+function handleClickSelect() {
+	document.getElementById("AddButton").style.background='#252c57';
+	document.getElementById("EditButton").style.background='#252c57';
+	document.getElementById("DeleteButton").style.background='#252c57';
+	document.getElementById("SelectButton").style.background='#464958';
+	document.getElementById("AddDiv").style.display = "none";
+	document.getElementById("EditDiv").style.display = "none";
+	document.getElementById("RemoveDiv").style.display = "none";
+	document.getElementById("SelectDiv").style.display = "block";
 }
 
 
@@ -204,6 +223,78 @@ async function addResident(id, name, email, age, room, unit, bld) {
 
 		alert(JSON.stringify(rd));
 		
+	} catch (error) {
+		alert(error);
+		console.error(error);
+	}
+}
+
+
+async function handleSelectSend() {
+	let query = document.getElementById("selectField").value;
+	var q = "WHERE";
+	if(query.length == 0){
+		alert("invalid query"); return;
+	}
+	while(query.length > 0){
+		if(query.startsWith("id")){ q += " studentId"; query = query.replace('id','');}
+		else if(query.startsWith("age")){ q += " age"; query = query.replace('age',''); }
+		else if(query.startsWith("name")){ q += " name"; query = query.replace('name',''); }
+		else if(query.startsWith("email")){ q += " email"; query = query.replace('email',''); }
+		else if(query.startsWith("room")){ q += " roomNumber"; query = query.replace('room',''); }
+		else if(query.startsWith("unit")){ q += " unitNumber"; query = query.replace('unit',''); }
+		else if(query.startsWith("building")){ q += " buildingName"; query = query.replace('building',''); }
+		else {alert("invalid query"); return;}
+		if(query.startsWith(" = ")){q += " = "; query = query.replace(' = ','');}
+		else {alert("invalid query"); return;}
+		if(query.length == 0) {alert("invalid query"); return;}
+		if(!query.includes(" and") && !query.includes(" or")){
+			//end of query on only val remains
+			q +='\''
+			q += query;
+			q +='\''
+			query = "";
+		} else {
+			if (query.includes(" and")){
+				let val = query.substring(0, query.indexOf(' and'));
+			} else {
+				let val = query.substring(0, query.indexOf(' or'));
+			}
+			q +='\''
+			q += val;
+			q +='\''
+			query = query.replace(val,'');
+			if(query.startsWith(" and ")){
+				q += " AND "; query = query.replace(' and ','');
+			} else if(query.startsWith(" or ")){
+				q += " OR "; query = query.replace(' or ','');
+			} else {
+				alert("invalid query"); return;
+			}
+			if(query.length == 0){
+				alert("invalid query"); return;
+			}
+		}
+	}
+
+	try {
+		const response = await fetch('get-residents-filter', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				query: q
+			})
+		});
+
+		const responseData = await response.json();
+		const tableContent = responseData.data;
+		if(tableContent.length == 0){
+			alert("No resident with the info found");
+		} else {
+			alert(JSON.stringify(tableContent));
+		}
 	} catch (error) {
 		alert(error);
 		console.error(error);

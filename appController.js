@@ -164,4 +164,15 @@ router.get('/get-residentdb', async (req, res) => {
     res.json({data: tableContent});
 })
 
+router.post('/get-residents-filter', async (req, res) => {
+    const { query } = req.body;
+    console.error('that:' + query + "!");
+    const tableContent = await appService.fetchResidentFilter(query);
+    if (!tableContent) {
+        res.status(500).json({ success: false });
+    } else {
+        res.json({ data: tableContent });
+    }
+})
+
 module.exports = router;
